@@ -1,0 +1,37 @@
+{
+  "clients": [
+    {
+      "id": "1",
+      "nom": "Fall",
+      "prenom": "Abdou",
+      "tel": "775205028",
+      "email": "mouhamed@gmail.com",
+      "password": "1234567"
+    }
+  ],
+  "articles": [
+    {
+      "id": "1",
+      "nom": "lait",
+      "prix": "2100",
+      "quantite_stock": "50"
+    }
+  ],
+  "commandes": [
+    {
+      "id": "1",
+      "date": "27-02-2023",
+      "numero_commande": "325AB6",
+      "statut": "payé",
+      "montant_paye": "210000",
+      "id_client": "1"
+    }
+  ],
+  "commandProduit": [
+    {
+      "id_commande": 1,
+      "id_article": 1,
+      "quantite": 2
+    }
+  ]
+}
