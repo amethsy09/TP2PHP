@@ -7,22 +7,58 @@ if (isset($_REQUEST['page'])) {
     $page = $_REQUEST['page'];
     if ($page == "commandes") {
         ob_start();
-        $data=loadData();
+
+        // Charger les données des commandes
+        $data = jsonToArray1('commandes');
+
+        // Vérifier si l'ID du client est présent dans la requête GET
         $clientId = isset($_GET['client_id']) ? (int)$_GET['client_id'] : null;
+
         if ($clientId) {
+            // Trouver le client par son ID
             $client = findClientById($clientId);
+
             if ($client) {
-                $commandes = array_filter($data['commandes'], function ($commande) use ($clientId) {
+                // Filtrer les commandes par l'ID du client
+                $commandes = array_filter($data, function ($commande) use ($clientId) {
                     return $commande['id_client'] == $clientId;
                 });
+
+                // Pour chaque commande, on récupère les articles associés
+                foreach ($commandes as &$commande) {
+                    $commande['articles'] = [];
+                    // Chercher les articles associés à cette commande
+                    $data=jsonToArray1('commandProduit');
+                    foreach ($data as $cmdProduit) {
+                        if ($cmdProduit['id_commande'] == $commande['id']) {
+                            $article = findArticleById($cmdProduit['id_article']);
+                            if ($article) {
+                                $commande['articles'][] = [
+                                    'nom' => $article['nom'],
+                                    'prix' => $article['prix'],
+                                    'quantite' => $cmdProduit['quantite'],
+                                    'total' => $article['prix'] * $cmdProduit['quantite']
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Charger la vue des commandes
                 require_once "../views/commande/list.commandes.html.php";
+                
+                // Récupérer le contenu de la vue
                 $content = ob_get_clean();
+
+                // Charger la mise en page du site
                 require_once "../views/layout/base.layout.html.php";
             } else {
+                // Client non trouvé
                 echo "Client non trouvé.";
                 exit;
             }
         } else {
+            // ID du client manquant dans la requête
             echo "ID de client manquant.";
             exit;
         }
@@ -150,11 +186,11 @@ if (isset($_REQUEST['page'])) {
                 'articles' => $_SESSION['articles'],
             ];
             $_SESSION['commandes'][$tel][] = $commande;
-            $allClient = findAllClients();
-            foreach ($allClient as $key => $value) {
+            $data = findAllClients();
+            foreach ($data as $key => $value) {
                 if ($value['telephone'] == $tel) {
-                    $allClient[$key]['commandes'][] = $commande;
-                    saveClientsToFile($allClient);
+                    $data[$key]['commandes'][] = $commande;
+                    saveDataToFile($data);
                     break;
                 }
             }
@@ -164,8 +200,12 @@ if (isset($_REQUEST['page'])) {
 
         require_once "../views/commande/form.commande.html.php";
     } elseif ($page == "Allcommandes") {
-        // unset($_SESSION['clients'],$_SESSION['commandes']);
         $Allcommandes = recupToutLesCommandes();
-        require_once "../views/commande/Allcommandes.html.php";
+        if (!empty($Allcommandes)) {
+            renderView("commande/Allcommandes.html.php", compact('Allcommandes'), "base");
+        } else {
+            echo "Aucune commande trouvée.";
+        }
     }
+    // require_once "../views/commande/Allcommandes.html.php";
 }

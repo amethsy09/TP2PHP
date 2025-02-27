@@ -1,5 +1,5 @@
 <?php
-define("WEBROOT", "http://mouhamed.sy.ecole221.sn:8000/?");
+define("WEBROOT", "http://mouhamed.sy.ecole221.sn:8000/");
 require_once "../model.php";
 require_once "..//config/helpers.php";
 $controllers= [

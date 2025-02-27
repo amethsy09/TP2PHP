@@ -1,6 +1,7 @@
 <?php 
+
 $data= findAllClients();
-$currentPage = isset($_GET['view']) ? (int) $_GET['view'] : 2;
+$currentPage = isset($_GET['view']) && is_numeric($_GET['view']) ? (int) $_GET['view'] : 1;
         $nbrElement = 3;
         $clientListe= lister_par_page($data,$currentPage,$nbrElement);
         $nbrPage= recup_nbrdepage( $data, 3);
@@ -34,11 +35,11 @@ $currentPage = isset($_GET['view']) ? (int) $_GET['view'] : 2;
                 <?php if (!empty($clientListe)) : ?>
     <tbody>
         <?php foreach ($clientListe as $client): ?>
-            <?php if (isset($client['nom'], $client['prenom'], $client['telephone'])): ?>
+            <?php if (isset($client['nom'], $client['prenom'], $client['tel'])): ?>
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($client['nom']) ?></td>
                     <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($client['prenom']) ?></td>
-                    <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($client['telephone']) ?></td>
+                    <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($client['tel']) ?></td>
                     <td class="px-4 py-2 border border-gray-300">
                         <a href="<?= WEBROOT ?>?controller=commandes&page=commandes&client_id=<?= $client['id'] ?>" class="px-3 py-1 text-white bg-blue-500 rounded hover:bg-red-600 inline-block">Commande</a>
                     </td>
@@ -55,7 +56,7 @@ $currentPage = isset($_GET['view']) ? (int) $_GET['view'] : 2;
                     </table>
                     <div class="flex justify-center text-gray-800 mt-4">
                     <div class="flex items-center gap-1">
-                        <?php if ($currentPage > 0): ?>
+                        <?php if ($currentPage > 1): ?>
                             <a href="?page=liste&view=<?= $currentPage - 1 ?>" class="px-3 py-2 self-center rounded  border border-gray-300  hover:bg-gray-100">Précédent</a>
                         <?php endif; ?>
 

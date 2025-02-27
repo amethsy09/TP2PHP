@@ -1,6 +1,6 @@
 <?php
 // require_once "data.php";
-define('DATA_FILE', 'data.json');
+define('DATA_FILE', '../data/data.json');
 
 // les fonctions
 function loadData()
@@ -13,12 +13,12 @@ function saveData($data)
     file_put_contents("../data.json", json_encode($data, JSON_PRETTY_PRINT));
 }
 function findAllClients()
-{
-    $data = loadData();
-    // Stocke les clients en session
-    $_SESSION['clients'] = $data['clients']; 
+{ 
+    $clients = jsonToArray1('clients');
+    $_SESSION['clients'] = $clients; 
     return $_SESSION['clients'];
-}function findClientById($id)
+}
+function findClientById($id)
 {
     $clients = findAllClients();
     $client = null;
@@ -34,24 +34,25 @@ function getClientByTel($tel)
 {
     $clients = findAllClients();
     foreach ($clients as $client) {
-        if ($client['tel'] == $tel) { // Correction de la clé 'tel'
+        if ($client['tel'] == $tel) { 
             return $client;
         }
     }
-    return null; // Retourne null si aucun client trouvé
+    return null; // 
 }
-// function saveClientsToFile($clients) {
-//     $filePath = __DIR__ ."/data.php";
-//     $data = "<?php\nreturn " . str_replace("array (", "[", var_export($clients, true));
-//     $data = str_replace(")", "]", $data) . ";\n";
-//     file_put_contents($filePath,$data);
-//   }
-function saveClientsToFile($client) {
+function saveDataToFile($data) {
     $filePath = __DIR__ . "/data.php";
-    // On génère un tableau PHP valide en formatant correctement les tableaux imbriqués
-    $data = "<?php\n$"."clients =" . var_export($client, true) . ";\n";
-    file_put_contents($filePath, $data);
+
+    // Formatage des données pour générer un tableau PHP valide à partir des données JSON
+    $dataString = "<?php\n";
+    foreach ($data as $key => $value) {
+        $dataString .= "\$$key = " . var_export($value, true) . ";\n";
+    }
+
+    // Sauvegarde dans le fichier
+    file_put_contents($filePath, $dataString);
 }
+
 
 // fonction dump die
 function dd($var) {
@@ -80,17 +81,17 @@ function afficherClients()
 }
 function recupToutLesCommandes()
 {
-    $data = loadData();
+    $data = jsonToArray1('commandes');
     return $data['commandes']; // Retourne toutes les commandes
 }
 
 function getAllArticles()
 {
-    $data = loadData();
+    $data = jsonToArray1('articles');
     $articles = [];
 
     foreach ($data['commandProduit'] as $commandeProduit) {
-        foreach ($data['articles'] as $article) {
+        foreach ($data as $article) {
             if ($commandeProduit['id_article'] == $article['id']) {
                 $articles[] = [
                     'nom' => $article['nom'],
@@ -113,13 +114,9 @@ function findArticleByName($nom)
     }
     return null;
 }
-function jsonToArray(){
-    $json = file_get_contents('data.json');
-    $tab = json_decode($json, true)?? [];
-    return $tab;
-}
+
 function jsonToArray1(string $key=null){
-    $json = file_get_contents('data.json');
+    $json = file_get_contents('../data/data.json');
     $tab = json_decode($json, true)?? [];
     if($key!=null){
         return $tab[$key];
@@ -128,9 +125,17 @@ function jsonToArray1(string $key=null){
 }
 // Fonction pour gérer la déconnexion
 function logout() {
-    // session_unset();  
+    unset($_SESSION['user']);
     session_destroy();  
-    header('Location: connexion.php');
-    redirect('security','login');
+    renderView("security/login.html.php", [], "security");
     exit();
+}
+function findArticleById($id) {
+    $articles = jsonToArray1('articles');
+    foreach ($articles as $article) {
+        if ($article['id'] == $id) {
+            return $article;
+        }
+    }
+    return null;
 }

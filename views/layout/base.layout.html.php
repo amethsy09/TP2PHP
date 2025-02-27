@@ -20,7 +20,7 @@
         </a>
     </nav>
 
-    <main>
+ <main>
     <?=$content?>;
 </main>
 

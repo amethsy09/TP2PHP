@@ -6,7 +6,7 @@
       "prenom": "Abdou",
       "tel": "775205028",
       "email": "mouhamed@gmail.com",
-      "password": "1234567"
+      "password": "77"
     }
   ],
   "articles": [
@@ -23,7 +23,7 @@
       "date": "27-02-2023",
       "numero_commande": "325AB6",
       "statut": "payé",
-      "montant_paye": "210000",
+      "montant": "210000",
       "id_client": "1"
     }
   ],
