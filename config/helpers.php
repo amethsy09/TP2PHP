@@ -14,3 +14,15 @@ function redirect($controller, $page) {
         echo "Erreur : La constante WEBROOT n'est pas définie.";
     }
 }
+function dd($var) {
+    echo '<pre>';
+    var_dump($var);
+    echo '</pre>';
+    die(); // Arrête l'exécution du script
+}
+function logout() {
+    unset($_SESSION['user']);
+    session_destroy();  
+    renderView("security/login.html.php", [], "security");
+    exit();
+}

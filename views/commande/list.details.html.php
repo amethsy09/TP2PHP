@@ -21,19 +21,19 @@
                 <thead>
                     <tr class="bg-blue-100 text-gray-700">
                         <th class="border px-4 py-3">ID</th>
-                        <th class="border px-4 py-3">titre</th>
-                        <th class="border px-4 py-3">prix_unitaire</th>
-                        <th class="border px-4 py-3">quantite</th>
+                        <th class="border px-4 py-3">nom</th>
+                        <th class="border px-4 py-3">prix</th>
+                        <th class="border px-4 py-3">quantite_stock</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($produits)) : ?>
-                        <?php foreach ($produits as $produit): ?>
+                    <?php if (!empty($articles)) : ?>
+                        <?php foreach ($articles as $produit): ?>
                             <tr class="hover:bg-gray-50">
                                 <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($produit['id']) ?></td>
-                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($produit['titre']) ?></td>
-                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($produit['prix_unitaire']) ?> FCFA</td>
-                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($produit['quantite']) ?></td>
+                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($produit['nom']) ?></td>
+                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($produit['prix']) ?> FCFA</td>
+                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($produit['quantite_stock']) ?></td>
                               
                             </tr>
                         <?php endforeach; ?>

@@ -4,7 +4,7 @@
       "id": "1",
       "nom": "Fall",
       "prenom": "Abdou",
-      "tel": "775205028",
+      "tel": "777777777",
       "email": "mouhamed@gmail.com",
       "password": "77"
     }
@@ -15,6 +15,12 @@
       "nom": "lait",
       "prix": "2100",
       "quantite_stock": "50"
+    },
+    {
+      "id": "2",
+      "nom": "Mil",
+      "prix": "3000",
+      "quantite_stock": "20"
     }
   ],
   "commandes": [

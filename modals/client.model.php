@@ -1,7 +1,6 @@
 <?php
 // require_once "data.php";
 define('DATA_FILE', '../data/data.json');
-
 // les fonctions
 function loadData()
 {
@@ -42,8 +41,6 @@ function getClientByTel($tel)
 }
 function saveDataToFile($data) {
     $filePath = __DIR__ . "/data.php";
-
-    // Formatage des données pour générer un tableau PHP valide à partir des données JSON
     $dataString = "<?php\n";
     foreach ($data as $key => $value) {
         $dataString .= "\$$key = " . var_export($value, true) . ";\n";
@@ -54,13 +51,13 @@ function saveDataToFile($data) {
 }
 
 
-// fonction dump die
-function dd($var) {
-    echo '<pre>';
-    var_dump($var);
-    echo '</pre>';
-    die(); // Arrête l'exécution du script
-}
+// // fonction dump die
+// function dd($var) {
+//     echo '<pre>';
+//     var_dump($var);
+//     echo '</pre>';
+//     die(); // Arrête l'exécution du script
+// }
 
 
 // affichage
@@ -79,42 +76,6 @@ function afficherClients()
         afficherClient($client);
     }
 }
-function recupToutLesCommandes()
-{
-    $data = jsonToArray1('commandes');
-    return $data['commandes']; // Retourne toutes les commandes
-}
-
-function getAllArticles()
-{
-    $data = jsonToArray1('articles');
-    $articles = [];
-
-    foreach ($data['commandProduit'] as $commandeProduit) {
-        foreach ($data as $article) {
-            if ($commandeProduit['id_article'] == $article['id']) {
-                $articles[] = [
-                    'nom' => $article['nom'],
-                    'prix_unitaire' => $article['prix'],
-                    'quantite' => $commandeProduit['quantite']
-                ];
-            }
-        }
-    }
-    return $articles;
-}
-
-function findArticleByName($nom)
-{
-    $articles = getAllArticles();
-    foreach ($articles as $article) {
-        if (stripos($article['nom'], $nom) !== false) {
-            return $article;
-        }
-    }
-    return null;
-}
-
 function jsonToArray1(string $key=null){
     $json = file_get_contents('../data/data.json');
     $tab = json_decode($json, true)?? [];
@@ -124,18 +85,9 @@ function jsonToArray1(string $key=null){
     return $tab;
 }
 // Fonction pour gérer la déconnexion
-function logout() {
-    unset($_SESSION['user']);
-    session_destroy();  
-    renderView("security/login.html.php", [], "security");
-    exit();
-}
-function findArticleById($id) {
-    $articles = jsonToArray1('articles');
-    foreach ($articles as $article) {
-        if ($article['id'] == $id) {
-            return $article;
-        }
-    }
-    return null;
-}
+// function logout() {
+//     unset($_SESSION['user']);
+//     session_destroy();  
+//     renderView("security/login.html.php", [], "security");
+//     exit();
+// }

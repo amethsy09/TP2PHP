@@ -10,17 +10,9 @@ $clients = $_SESSION['clients'];
 // unset($_SESSION['user']);
 if (isset($_REQUEST['page'])) {
     $page = $_REQUEST['page'];
-    if ($page == 'login') { 
-        // Vérifier si l'utilisateur est déjà connecté
-        if (isset($_SESSION['user'])) {
-            redirect('security', 'dashboard');
-            exit;
-        }
+    if ($page == 'login') {
+                
     
-        // Vérifier si les clients sont déjà chargés en session, sinon on les charge
-        if (!isset($_SESSION['clients'])) {
-            findAllClients(); // Charger les clients dans la session
-        }
     
         // Vérification de la soumission du formulaire
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,14 +22,13 @@ if (isset($_REQUEST['page'])) {
             if (empty($email) || empty($password)) {
                 $error = "Veuillez remplir tous les champs.";
             } else {
-                // Parcourir les clients pour vérifier les identifiants
                 $userFound = false;
                 foreach ($_SESSION['clients'] as $client) { 
                     if ($client['email'] === $email && $client['password'] === $password) {
                         $_SESSION['user'] = $client;
                         redirect('security', 'dashboard');
+                        break;
                         $userFound = true;
-                        break; // Utiliser break pour sortir dès que l'utilisateur est trouvé
                     }
                 }
     

@@ -78,11 +78,11 @@
                     <?php foreach ($_SESSION['articles'] as $k => $art) : ?>
                         <tr>
                             <td class="border p-3"><?= htmlspecialchars($art['article']); ?></td>
-                            <td class="border p-3"><?= number_format((float)$art['prix_unitaire'], 0, ',', ' ') . ' FCFA'; ?></td>
-                            <td class="border p-3"><?= htmlspecialchars($art['quantite']); ?></td>
+                            <td class="border p-3"><?= number_format((float)$art['prix'], 0, ',', ' ') . ' FCFA'; ?></td>
+                            <td class="border p-3"><?= htmlspecialchars($art['quantite_stock']); ?></td>
                             <td class="border p-3">
                                 <?php
-                                $montant = (float)$art['prix_unitaire'] * (int)$art['quantite'];
+                                $montant = (float)$art['prix'] * (int)$art['quantite_stock'];
                                 echo number_format($montant, 0, ',', ' ') . ' FCFA';
                                 ?>
                             </td>

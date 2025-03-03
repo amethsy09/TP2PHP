@@ -1,7 +1,9 @@
 <?php
 session_start(); // Démarrer la session
 
-require_once "../model.php";
+// require_once "../model.php";
+require_once "../modals/commande.model.php";
+
 // Gestion de la page 
 if (isset($_REQUEST['page'])) {
     $page = $_REQUEST['page'];
@@ -92,17 +94,17 @@ if (isset($_REQUEST['page'])) {
             // Récupérer les valeurs du formulaire
             $id = $_POST['id'] ?? null;
             $article = $_POST['article'];
-            $prix_unitaire = $_POST['prix_unitaire'];
+            $prix = $_POST['prix'];
             $quantite = $_POST['quantite'];
            if (!empty($_SESSION['tel'])&& isset($_SESSION['tel'] )) {
            $_SESSION['tel'] = $_GET['tel'];
            }
-            if (isset($_POST['prix_unitaire']) && isset($_POST['quantite'])) {
-                $prix_unitaire = (float) $_POST['prix_unitaire'];
+            if (isset($_POST['prix']) && isset($_POST['quantite'])) {
+                $prix_unitaire = (float) $_POST['prix'];
                 $quantite = (int) $_POST['quantite'];
 
-                if (is_numeric($prix_unitaire) && is_numeric($quantite)) {
-                    $montant = $prix_unitaire * $quantite;
+                if (is_numeric($prix) && is_numeric($quantite)) {
+                    $montant = $prix * $quantite;
                 } else {
                     echo "Erreur : Le prix ou la quantité n'est pas valide.";
                     exit;
@@ -112,16 +114,16 @@ if (isset($_REQUEST['page'])) {
                 exit;
             }
             // Calculer le montant
-            $prix_unitaire = (float) $_POST['prix_unitaire'];
+            $prix = (float) $_POST['prix'];
             $quantite = (int) $_POST['quantite'];
             // Calculer le montant
-            $montant = $prix_unitaire * $quantite;
+            $montant = $prix * $quantite;
 
             // Ajouter l'article au tableau de session
             $_SESSION['articles'][] = [
                 'id' => $id,
                 'article' => $article,
-                'prix_unitaire' => $prix_unitaire,
+                'prix' => $prix,
                 'quantite' => $quantite,
                 'montant' => $montant
             ];
@@ -152,7 +154,7 @@ if (isset($_REQUEST['page'])) {
             foreach ($_SESSION['articles'] as &$art) {
                 if ($art['id'] == $_POST['id']) {
                     $art['article'] = $_POST['article'];
-                    $art['prix_unitaire'] = $_POST['prix_unitaire'];
+                    $art['prix'] = $_POST['prix'];
                     $art['quantite'] = $_POST['quantite'];
                     break;
                 }
@@ -172,7 +174,7 @@ if (isset($_REQUEST['page'])) {
             $montantTotal = 0;
             if (!empty($_SESSION['articles'])) {
                 foreach ($_SESSION['articles'] as $article) {
-                    $montantTotal += $article['prix_unitaire'] * $article['quantite'];
+                    $montantTotal += $article['prix'] * $article['quantite'];
                 }
             }
             // recuperation de l'id
@@ -187,25 +189,24 @@ if (isset($_REQUEST['page'])) {
             ];
             $_SESSION['commandes'][$tel][] = $commande;
             $data = findAllClients();
-            foreach ($data as $key => $value) {
-                if ($value['telephone'] == $tel) {
-                    $data[$key]['commandes'][] = $commande;
-                    saveDataToFile($data);
+            foreach ($data['clients'] as  $client) {
+                if ($client['tel'] == $tel) {
+                    $client['commandes'][] = $commande;
                     break;
                 }
             }
+            saveDataToFile($data);
             redirect('commandes', 'Allcommandes');
         }
-        // $Allcommandes = $_SESSION['commandes'] ?? [];
-
         require_once "../views/commande/form.commande.html.php";
     } elseif ($page == "Allcommandes") {
         $Allcommandes = recupToutLesCommandes();
-        if (!empty($Allcommandes)) {
-            renderView("commande/Allcommandes.html.php", compact('Allcommandes'), "base");
-        } else {
-            echo "Aucune commande trouvée.";
-        }
+        // Récupérer le contenu de la vue
+        $content = ob_get_clean();
+        require_once "../views/commande/Allcommandes.html.php";
+            if (!isset($_SESSION['clients'])) {
+                findAllClients(); 
+            }
     }
-    // require_once "../views/commande/Allcommandes.html.php";
+    
 }

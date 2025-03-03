@@ -15,7 +15,7 @@
     </div>
     <nav class="bg-white shadow-md p-4 flex justify-between">
         <h2 class="text-xl font-semibold text-blue-600">Menu</h2>
-        <a href="<?= WEBROOT ?>controller=commandes&page=Allcommandes" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-red-600">
+        <a href="<?= WEBROOT ?>?controller=commandes&page=Allcommandes" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-red-600">
             Commandes
         </a>
     </nav>

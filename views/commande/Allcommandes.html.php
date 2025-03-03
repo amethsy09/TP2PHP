@@ -12,8 +12,9 @@ require_once "../views/layout/base.layout.html.php";
                 <thead>
                     <tr class="bg-blue-100 text-gray-700">
                         <th class="border px-4 py-3">Date</th>
-                        <th class="border px-4 py-3">Montant</th>
+                        <th class="border px-4 py-3">numero_commande</th>
                         <th class="border px-4 py-3">Statut</th>
+                        <th class="border px-4 py-3">Montant</th>
                         <th class="border px-4 py-3">Actions</th>
                     </tr>
                 </thead>
@@ -22,10 +23,11 @@ require_once "../views/layout/base.layout.html.php";
                             <?php foreach ($Allcommandes as  $commande): ?>
                             <tr class="hover:bg-gray-50">
                                 <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($commande['date']) ?></td>
-                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($commande['montant']) ?> FCFA</td>
+                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($commande['numero_commande']) ?></td>
                                 <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($commande['statut']) ?></td>
+                                <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($commande['montant']) ?> FCFA</td>
                                 <td class="px-4 py-2 border border-gray-300">
-                                <a href="<?= WEBROOT ?>?page=detail&client_id=<?= htmlspecialchars($Allcommande['client_id']) ?>" class="px-3 py-1 text-white bg-blue-500 rounded hover:bg-red-600 inline-block">Détail</a>
+                                <a href="<?= WEBROOT ?>?page=detail&client_id=<?= htmlspecialchars($Allcommande['id_client']) ?>" class="px-3 py-1 text-white bg-blue-500 rounded hover:bg-red-600 inline-block">Détail</a>
                             </td>
                             </tr>
                         <?php endforeach; ?>
