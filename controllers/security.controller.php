@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../model.php";
+require_once "../orm.php";
 $error = "";
 $data = loadData();
 $_SESSION['clients'] = $data['clients'];

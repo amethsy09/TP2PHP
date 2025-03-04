@@ -1,6 +1,6 @@
 <?php
 
-require_once "../model.php";
+require_once "../orm.php";
 require_once "../lib/utile.php";
 
 // Récupération des données

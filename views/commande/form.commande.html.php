@@ -11,6 +11,7 @@
 <body class="bg-gray-100 p-6">
     <div class="max-w-6xl mx-auto">
         <!-- Section Commande -->
+        <!-- recherche client via telephone -->
         <div class="bg-white p-6 rounded-lg shadow-lg space-y-6">
             <h2 class="text-xl font-bold text-gray-800">Informations Client</h2>
             <form action="" method="get" class="space-y-4">
@@ -23,7 +24,7 @@
                 </div>
 
             </form>
-
+            <!-- infos du client -->
             <div class="flex space-x-4">
                 <div class="flex-1">
                     <label for="nom" class="block text-sm text-gray-700">Nom</label>
@@ -34,34 +35,51 @@
                     <input type="text" id="prenom" readonly name="prenom" placeholder="Entrez le prénom" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="<?= $_SESSION['client']["prenom"] ?? "" ?>">
                 </div>
             </div>
-           
+            <!-- rechercher article -->
             <form action="" method="get" class="space-y-4">
                 <input type="hidden" name="controller" value="commandes">
                 <input type="hidden" name="page" value="ajout">
                 <div class="flex space-x-4 items-center">
                     <label for="article" class="block text-sm text-gray-700">Nom </label>
-                    <input type="text" name="article" placeholder="Entrez le nom de l'article" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="<?= isset($_GET['article']) ? htmlspecialchars($_GET['article']) : '' ?>">
+                    <input type="text" name="article" placeholder="Entrez le nom de l'article" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value="<?= isset($_GET['article']) ? htmlspecialchars($_GET['article']) : '' ?>">
                     <button type="submit" name="rechercher_article" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300">Rechercher</button>
                 </div>
             </form>
-            <input type="number" name="quantite" placeholder="Quantité" class="w-1/4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"  min="1" 
-           max="<?= $_SESSION['articleModifier']['quantite'] ?? '1' ?>"
-           value="1" required>
             <h2 class="text-xl font-bold text-gray-800">Ajouter un Article</h2>
+
             <form action="" method="POST" class="flex space-x-4 mb-6">
                 <input type="hidden" name="id" value="<?= $_SESSION['articleModifier']['id'] ?? '' ?>">
-                <input type="text" name="article" placeholder="Nom de l'article" class="w-1/3 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="<?= $_SESSION['articleModifier']['nom'] ?? '' ?>" readonly>
-                <input type="number" name="prix_unitaire" placeholder="Prix" class="w-1/4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="<?= $_SESSION['articleModifier']['prix_unitaire'] ?? '' ?>" readonly>
-                <input type="number" name="quantite" placeholder="Quantité" class="w-1/4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="<?= $_SESSION['articleModifier']['quantite'] ?? '' ?>"  readonly>
+                <input type="text" name="article" placeholder="Nom de l'article" class="w-1/3 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="<?= $_SESSION['articleModifier']['nom'] ?? '' ?>" readonly>
+                <input type="number" name="prix" placeholder="Prix" class="w-1/4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="<?= $_SESSION['articleModifier']['prix'] ?? '' ?>" readonly>
+                <input type="number" name="quantite" placeholder="Quantité" class="w-1/4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="<?= $_SESSION['articleModifier']['quantite_stock'] ?? '' ?>" readonly>
 
-                <?php if (isset($articleModifier)) : ?>
-                    <button type="submit" name="modifier_article" class="bg-yellow-600 text-white px-6 py-3 rounded-full hover:bg-yellow-700 transition duration-300">Modifier</button>
-                <?php else : ?>
-                    <button type="submit" name="ajouter" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300">Ajouter</button>
-                <?php endif; ?>
+                <?php $isArticleFound = isset($_SESSION['articleModifier']); ?>
+                <button type="submit" name="<?= $isArticleFound ? 'modifier_article' : 'ajouter' ?>"
+                    class="<?= $isArticleFound ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-blue-600 hover:bg-blue-700' ?> text-white px-6 py-3 rounded-full transition duration-300">
+                    <?= $isArticleFound ? 'Modifier' : 'Ajouter' ?>
+                </button>
             </form>
 
+            <form method="post">
+                <div class="flex items-center space-x-4">
+                    <div class="w-1/4 mb-4">
+                        <label for="quantite" class="block text-sm font-medium text-gray-700">Quantité</label>
+                        <input type="number" id="quantite" name="quantite" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <input type="hidden" name="controller" value="commande">
+                    <input type="hidden" name="page" value="ajout">
 
+                    <div class="w-1/6 mt-6">
+                        <button type="submit" name="ajoutProduit" class="w-full px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                            Ajouter produit
+                        </button>
+                    </div>
+                </div>
+            </form>
             <!-- Tableau des Articles -->
             <table class="w-full table-auto border-collapse border border-gray-300 shadow-md">
                 <thead>

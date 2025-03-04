@@ -26,3 +26,12 @@ function logout() {
     renderView("security/login.html.php", [], "security");
     exit();
 }
+function isPost():bool{
+    return $_SERVER["REQUEST_METHOD"] == "POST";
+}
+function isGet():bool{
+    return $_SERVER["REQUEST_METHOD"] == "GET";
+}
+function isConnect():bool {
+    return isset($_SESSION["user"]);
+}

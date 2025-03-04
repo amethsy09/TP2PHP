@@ -7,6 +7,20 @@
       "tel": "777777777",
       "email": "mouhamed@gmail.com",
       "password": "77"
+    },
+    {
+      "id": 2,
+      "nom": "Abdou ",
+      "prenom": "Ndoye",
+      "adresse": "123 Main St",
+      "tel": "78"
+    },
+    {
+      "id": 3,
+      "nom": "Fatou ",
+      "prenom": "FAll",
+      "addresse": "Anytown, USA",
+      "tel": "76"
     }
   ],
   "articles": [
